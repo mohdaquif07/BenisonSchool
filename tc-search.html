@@ -153,30 +153,9 @@
         <img src="Documents/TC SAMPLE.jpg" alt="Sample TC"
             style="display:block;margin:0 auto;max-width:100%;height:auto;border:1px solid #ccc;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
     </div>
+    <script src="assets/js/tc-search.js"></script>
     <script>
-        document.getElementById('tc-search-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const admno = document.getElementById('admno').value.trim();
-            const studentname = document.getElementById('studentname').value.trim();
-            const resultDiv = document.getElementById('tc-search-result');
-            resultDiv.textContent = 'Searching...';
-            fetch('tc-search.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `admission_no=${encodeURIComponent(admno)}&name=${encodeURIComponent(studentname)}`
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        resultDiv.innerHTML = `<a href="${data.url}" target="_blank" download>Download TC PDF</a>`;
-                    } else {
-                        resultDiv.textContent = data.message;
-                    }
-                })
-                .catch(() => {
-                    resultDiv.textContent = 'Error searching for TC.';
-                });
-        });
+        initTcSearch('tc-search-form', 'tc-search-result');
     </script>
 </body>
 
