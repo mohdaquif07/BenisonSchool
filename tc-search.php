@@ -8,7 +8,7 @@ if ($admission_no === '' || $name === '') {
     exit;
 }
 
-$dir = __DIR__ . '/tc pdfs/';
+$dir = __DIR__ . '/tc-pdfs/';
 if (!is_dir($dir)) {
     echo json_encode(['success' => false, 'message' => 'TC folder not found.']);
     exit;
@@ -31,7 +31,7 @@ foreach ($files as $file) {
 }
 
 if ($found) {
-    $url = 'tc pdfs/' . rawurlencode($filename_found);
+    $url = 'tc-pdfs/' . rawurlencode($filename_found);
     echo json_encode(['success' => true, 'url' => $url]);
 } else {
     echo json_encode(['success' => false, 'message' => 'No matching TC found. Please check your details.']);
