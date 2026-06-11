@@ -41,6 +41,7 @@ const closeBtn = document.querySelector('.modal-close');
 const prevBtn = document.querySelector('.modal-prev');
 const nextBtn = document.querySelector('.modal-next');
 const galleryItems = document.querySelectorAll('.gallery-item');
+let activeGalleryItems = [];
 let currentImageIndex = 0;
 
 if (galleryLink && gallerySection) {
@@ -51,17 +52,37 @@ if (galleryLink && gallerySection) {
     });
 }
 
+// Sports gallery "See More" toggle
+const sportsSeeMoreBtn = document.getElementById('sports-see-more');
+const sportsGalleryGrid = document.getElementById('sports-gallery-grid');
+if (sportsSeeMoreBtn && sportsGalleryGrid) {
+    sportsSeeMoreBtn.addEventListener('click', () => {
+        sportsGalleryGrid.querySelectorAll('.gallery-item--hidden').forEach((item) => {
+            item.classList.remove('gallery-item--hidden');
+        });
+        sportsSeeMoreBtn.style.display = 'none';
+    });
+}
+
 if (galleryItems.length > 0 && modal && modalImg && modalCaption && closeBtn && prevBtn && nextBtn) {
+    function getVisibleGalleryItems(grid) {
+        return Array.from(grid.querySelectorAll('.gallery-item')).filter(
+            (item) => !item.classList.contains('gallery-item--hidden')
+        );
+    }
+
     // Open modal when clicking gallery items
-    galleryItems.forEach((item, index) => {
+    galleryItems.forEach((item) => {
         item.addEventListener('click', () => {
-            currentImageIndex = index;
-            openModal(index);
+            const grid = item.closest('.gallery-grid');
+            activeGalleryItems = grid ? getVisibleGalleryItems(grid) : [];
+            currentImageIndex = activeGalleryItems.indexOf(item);
+            openModal(currentImageIndex);
         });
     });
 
     function openModal(index) {
-        const img = galleryItems[index].querySelector('img');
+        const img = activeGalleryItems[index].querySelector('img');
         modalImg.src = img.src;
         modalCaption.textContent = img.alt;
         modal.style.display = 'flex';
@@ -74,12 +95,12 @@ if (galleryItems.length > 0 && modal && modalImg && modalCaption && closeBtn && 
     }
 
     function showPrevImage() {
-        currentImageIndex = (currentImageIndex - 1 + galleryItems.length) % galleryItems.length;
+        currentImageIndex = (currentImageIndex - 1 + activeGalleryItems.length) % activeGalleryItems.length;
         openModal(currentImageIndex);
     }
 
     function showNextImage() {
-        currentImageIndex = (currentImageIndex + 1) % galleryItems.length;
+        currentImageIndex = (currentImageIndex + 1) % activeGalleryItems.length;
         openModal(currentImageIndex);
     }
 

@@ -314,6 +314,15 @@ body {
     display: block;
 }
 
+.gallery-item--hidden {
+    display: none;
+}
+
+.gallery-actions {
+    text-align: center;
+    margin-top: 2rem;
+}
+
 /* Prospectus Section Styles */
 .prospectus-section {
     padding: 8rem 2rem 2rem;
